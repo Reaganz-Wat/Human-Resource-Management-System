@@ -5,6 +5,7 @@ import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
 import GetStartedScreen from './app/screens/GetStartedScreen';
 import OnboardingScreen from './app/screens/OnboardingScreen';
+import AdminDashboard from './app/screens/AdminDashboard';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name='GetStartedScreen' component={GetStartedScreen}/>
         <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>
         <Stack.Screen name='LoginScreen' component={LoginScreen}/>
+        <Stack.Screen name='AdminDashboard' component={AdminDashboard}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
