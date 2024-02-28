@@ -11,9 +11,6 @@ import Notifications from './AdminComponents/Notifications';
 
 const Tab = createBottomTabNavigator();
 
-// const screenOptions = {
-//     tabBarShowLabel: false
-// }
 
 // Components name
 const homeName = 'Home';
