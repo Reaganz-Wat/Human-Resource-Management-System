@@ -44,7 +44,19 @@ const AdminDashboard = ({navigation}) => {
             )
         }
         >
-            <Tab.Screen name={homeName} component={Home}/>
+            <Tab.Screen options={{
+                                    tabBarShowLabel: true,
+                                    headerShown: false,
+                                    tabBarStyle: {
+                                        position: "absolute",
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        elevation: 0,
+                                        backgroundColor: COLORS.white
+                                        
+                                    }
+            }} name={homeName} component={Home}/>
             <Tab.Screen name={employeeName} component={EmployeeDetails}/>
             <Tab.Screen name={settingName} component={Settings}/>
             <Tab.Screen name={notification} component={Notifications}/>

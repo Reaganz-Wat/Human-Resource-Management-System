@@ -11,7 +11,7 @@ const LoginScreen = ({navigation}) => {
         navigation.navigate('RegisterScreen');
     }
     const go_to_admin = () => {
-        navigation.navigate('AdminDashboard');
+        navigation.navigate('DrawerNavigation');
     }
 
     return (
