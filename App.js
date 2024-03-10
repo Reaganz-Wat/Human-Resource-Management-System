@@ -7,6 +7,8 @@ import GetStartedScreen from './app/screens/GetStartedScreen';
 import OnboardingScreen from './app/screens/OnboardingScreen';
 import AdminDashboard from './app/screens/AdminDashboard';
 import DrawerNavigation from './app/screens/DrawerNavigation';
+import Departments from './app/screens/AdminComponents/Departments';
+import Employee from './app/screens/AdminComponents/Employee';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,8 @@ export default function App() {
         <Stack.Screen name='LoginScreen' component={LoginScreen}/>
         {/* <Stack.Screen name='AdminDashboard' component={AdminDashboard}/> */}
         <Stack.Screen name='DrawerNavigation' component={DrawerNavigation}/>
+        <Stack.Screen name='AdminDepartments' component={Departments} options={{headerShown: true, title: 'Departments'}}/>
+        <Stack.Screen name='Employee' component={Employee}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,9 +7,9 @@ import Button from "../components/Button";
 
 const RegisterScreen = ({navigation}) => {
 
-    const onPress = () => {
-        navigation.navigate('LoginScreen');
-    }
+    // const onPress = () => {
+    //     navigation.navigate('LoginScreen');
+    // }
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}}>
@@ -22,13 +22,6 @@ const RegisterScreen = ({navigation}) => {
                     <Input label="Password" iconName="lock-outline" placeholder="Enter your password" password />
                     <Input label="Phone number" iconName="phone-outline" placeholder="Enter your contact" keyboardType="numeric"/>
                     <Button title="Register"/>
-                    <Text 
-                        style={{
-                            color: COLORS.black,
-                            textAlign: 'center',
-                            fontWeight: 'bold'}}
-                        onPress={onPress}
-                            >Already have an account?Login</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Pressable } from 'react-native';
 import COLORS from '../../components/Colors';
 import Header from '../../components/Header';
 import { FlatList } from 'react-native-gesture-handler';
 import Input from '../../components/Input';
 
-const Home = () => {
+const Home = ({navigation}) => {
 
     const [data, setData] = useState([
         {name: 'User', key: '1', topColor: '#5D5FEE', backgColor: '#c7d7eb', icon: require('../../../assets/profile.png')},
@@ -22,6 +22,32 @@ const Home = () => {
         {name: 'Reports', key: '12', topColor: '#235D3A', backgColor: '#ABE0B7', icon: require('../../../assets/report.png')}
     ]);
 
+    const renderedItem = ({item})=>(
+
+        <Pressable onPress={()=>handleClick(item.key)}>
+            <View 
+                style={[styles.card, {borderTopColor: item.topColor, backgroundColor: item.backgColor}]}
+                >
+                <View style={styles.cardInner}>
+                    <Image style={styles.img} source={item.icon}/>
+                    <Text style={{fontSize: 18, fontWeight: 'bold', color: item.topColor}}> {item.name} </Text>
+                </View>
+            </View>
+        </Pressable>
+
+    )
+
+    const handleClick = (itemID) => {
+        console.log("Clicked itemID", itemID);
+        if (itemID == 3) {
+            // navigate to the departments screen
+            navigation.navigate('AdminDepartments');
+        }
+        if (itemID == 4) {
+            navigation.navigate('Employee');
+        }
+    }
+
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -32,22 +58,19 @@ const Home = () => {
 
                 {/* The body of the code */}
                 <View style={styles.container}>
-                <Input label="Search Categories" iconName="magnify" placeholder="Search . . . . ."/>
-                
-                {/* Cards for the details */}
-                <FlatList
-                    numColumns={2}
-                    keyExtractor={(item)=>item.key}
-                    data={data}
-                    renderItem={({item})=>(
-                        <View style={[styles.card, {borderTopColor: item.topColor, backgroundColor: item.backgColor}]}>
-                            <View style={styles.cardInner}>
-                                <Image style={styles.img} source={item.icon}/>
-                                <Text style={{fontSize: 18, fontWeight: 'bold', color: item.topColor}}> {item.name} </Text>
-                            </View>
-                        </View>
-                    )}
-                />
+                    {/* <Input label="Search Categories" iconName="magnify" placeholder="Search . . . . ."/> */}
+                    
+                    {/* Cards for the details */}
+                    <FlatList
+                        numColumns={2}
+                        // keyExtractor={(item)=>item.key}
+                        data={data}
+                        renderItem={renderedItem}
+                        columnWrapperStyle={{
+                            justifyContent: 'space-around'
+                        }}
+                        showsVerticalScrollIndicator={false}
+                    />
 
                 </View>
 
@@ -61,14 +84,15 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop:10,
         paddingHorizontal: 15,
-        backgroundColor: COLORS.white
+        backgroundColor: COLORS.white,
+        marginBottom: 50
     },
     card: {
-        width: 150,
+        width: 160,
         height: 200,
         borderRadius: 10,
         borderTopWidth: 4,
-        margin: 7,
+        marginVertical: 5,
         elevation: 6, // Add elevation for shadow effect
         shadowColor: '#000', // Shadow color
         shadowOpacity: 0.4, // Shadow opacity
@@ -87,7 +111,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    pressable: {
+        backgroundColor: 'lightblue',
+        padding: 10,
+        borderRadius: 5,
+      },
 });
 
 export default Home;

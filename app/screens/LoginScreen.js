@@ -7,9 +7,9 @@ import Button from "../components/Button";
 
 const LoginScreen = ({navigation}) => {
 
-    const go_to_login = () => {
-        navigation.navigate('RegisterScreen');
-    }
+    // const go_to_login = () => {
+    //     navigation.navigate('RegisterScreen');
+    // }
     const go_to_admin = () => {
         navigation.navigate('DrawerNavigation');
     }
@@ -23,7 +23,6 @@ const LoginScreen = ({navigation}) => {
                     <Input label="Username" iconName="account-outline" placeholder="Enter your username"/>
                     <Input label="Password" iconName="lock-outline" placeholder="Enter your password" password />
                     <Button title="Login" onPress={go_to_admin}/>
-                    <Text style={{color: COLORS.black, textAlign: 'center', fontWeight: 'bold'}} onPress={go_to_login}>Don't have an account?SignUp</Text>
                     <Text style={{textAlign: 'center', color: COLORS.black, fontWeight: 'bold', marginVertical: 10}}>Fogort your password: Reset</Text>
                 </View>
             </ScrollView>
