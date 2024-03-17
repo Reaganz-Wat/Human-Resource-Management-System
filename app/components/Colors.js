@@ -7,6 +7,9 @@ const COLORS = {
     darkBlue: '#7978B5',
     red: 'red',
     lightBlue: '#c7e7eb',
-    lightBLUE: '#c7d7eb'
+    lightBLUE: '#c7d7eb',
+    employee_color: '#498428',
+    manager_color: '#ff6c00',
+    admin_color: '#693B69'
 };
 export default COLORS;

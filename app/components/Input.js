@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import COLORS from './Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Input = ({label, iconName, error, password, onFocus = () => {}, ...props}) => {
+const Input = ({label, iconName, error, password, onChangeText, onFocus = () => {}, ...props}) => {
 
     const [isFocused, setIsFocused] = React.useState(false);
     const [hidepassword, setHidepassword] = React.useState(password);
@@ -24,6 +24,7 @@ const Input = ({label, iconName, error, password, onFocus = () => {}, ...props})
                         setIsFocused(false);
                     }}
                     style={{color: COLORS.darkBlue, flex: 1}}
+                    onChangeText={onChangeText}
                     {...props}/>
                 {password && (
                 <Icon 

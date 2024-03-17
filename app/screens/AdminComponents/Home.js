@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View, Text, StyleSheet, Image, Pressable,  } from 'react-native';
 import COLORS from '../../components/Colors';
 import Header from '../../components/Header';
 import { FlatList } from 'react-native-gesture-handler';
-import Input from '../../components/Input';
+
 
 const Home = ({navigation}) => {
 
