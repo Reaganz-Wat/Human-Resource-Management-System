@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../components/Colors";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import RNPickerSelect from "react-native-picker-select";
-import * as Progress from "react-native-progress";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { TextInput } from "react-native-gesture-handler";
 import TextMessage from "../components/TextMessage";
 import MyAPI from "../components/API";
 
@@ -41,13 +39,13 @@ const RegisterScreen = ({ navigation }) => {
   const errorMsg = "Oops! Error Occured";
 
   const registerMember = () => {
-    console.log("FullName: ", fullName);
-    console.log("Email: ", email);
-    console.log("Password: ", password);
-    console.log("Phone Number: ", phoneNumber);
-    console.log("Department id: ", department_id);
-    console.log("Title: ", title);
-    console.log("Role: ", selectedValue);
+    // console.log("FullName: ", fullName);
+    // console.log("Email: ", email);
+    // console.log("Password: ", password);
+    // console.log("Phone Number: ", phoneNumber);
+    // console.log("Department id: ", department_id);
+    // console.log("Title: ", title);
+    // console.log("Role: ", selectedValue);
 
     fetch(MyAPI.registerUser, {
         method: "POST",
