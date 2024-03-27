@@ -10,6 +10,8 @@ const COLORS = {
     lightBLUE: '#c7d7eb',
     employee_color: '#498428',
     manager_color: '#ff6c00',
-    admin_color: '#693B69'
+    admin_color: '#693B69',
+    delete_button: '#FA5C5C',
+    edit_button: '#0A8A07'
 };
 export default COLORS;

@@ -98,7 +98,6 @@ const Departments = () => {
     setEditMode(false);
     setVisible(false);
   };
-
   const showDialog = () => {
     setVisible(true);
   };
@@ -109,7 +108,6 @@ const Departments = () => {
   const cancelDeleteDialog = () => {
     setDeleteMode(false);
   };
-
   const deleteButton = () => {
     axios
       .post(MyAPI.deleteDepartment, {
@@ -126,35 +124,35 @@ const Departments = () => {
         console.error("Error deleting department:", error);
         // Handle error appropriately
       });
-
-      setDeleteDepartmentId(null);
-      setDeleteMode(false);
-      setVisible(false);
+    setDeleteDepartmentId(null);
+    setDeleteMode(false);
+    setVisible(false);
   };
-
 
   const renderDepartment = ({ item }) => {
     return (
       <View style={styles.innerContainer}>
         <View style={styles.card}>
-          <View style={{ width: "80%" }}>
+          <View style={{ width: "70%" }}>
             <Text style={{ fontSize: 18 }}>{item.name}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Ionicons
-              name="create-outline"
-              size={28}
-              color="green"
-              onPress={() => handleDepartmentItemClick(item.key, item.name)}
-            />
+            <View style={styles.editButton}>
+              <Ionicons
+                name="create-outline"
+                size={28}
+                onPress={() => handleDepartmentItemClick(item.key, item.name)}
+              />
+            </View>
+            <View style={[styles.editButton, {backgroundColor: COLORS.delete_button}]}>
             <Ionicons
               name="trash-outline"
               size={28}
-              color="red"
               onPress={() => {
                 showDeleteDialog(item.key);
               }}
             />
+            </View>
           </View>
         </View>
       </View>
@@ -163,6 +161,7 @@ const Departments = () => {
 
   return (
     <View style={styles.container}>
+    
       <FlatList
         numColumns={1}
         keyExtractor={(item) => item.key}
@@ -193,7 +192,7 @@ const Departments = () => {
           Are you sure you want to delete ?
         </Dialog.Title>
         <Dialog.Button label="CANCEL" onPress={cancelDeleteDialog} />
-        <Dialog.Button label="DELETE" onPress={deleteButton}/>
+        <Dialog.Button label="DELETE" onPress={deleteButton} />
       </Dialog.Container>
     </View>
   );
@@ -205,7 +204,9 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    margin: 5,
+    marginLeft: 5,
+    marginRight: 10,
+    marginVertical: 5
   },
   card: {
     height: 80,
@@ -217,6 +218,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderLeftWidth: 4,
     borderLeftColor: "blue",
+    elevation: 3,
   },
   addButton: {
     borderWidth: 1,
@@ -229,6 +231,14 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: COLORS.blue,
     borderRadius: 100,
+  },
+  editButton: {
+    backgroundColor: COLORS.edit_button,
+    width: 40,
+    borderRadius: 6,
+    alignItems: 'center',
+    padding: 2,
+    margin: 1
   },
 });
 

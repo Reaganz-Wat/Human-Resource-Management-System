@@ -39,6 +39,12 @@ const Home = ({navigation}) => {
 
     const handleClick = (itemID) => {
         console.log("Clicked itemID", itemID);
+        if (itemID == 1) {
+            navigation.navigate('Users');
+        }
+        if (itemID == 2) {
+            navigation.navigate('AdminManager');
+        }
         if (itemID == 3) {
             // navigate to the departments screen
             navigation.navigate('AdminDepartments');

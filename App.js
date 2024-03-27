@@ -9,6 +9,8 @@ import AdminDashboard from './app/screens/AdminDashboard';
 import DrawerNavigation from './app/screens/DrawerNavigation';
 import Departments from './app/screens/AdminComponents/Departments';
 import Employee from './app/screens/AdminComponents/Employee';
+import Users from './app/screens/AdminComponents/Users';
+import Managers from './app/screens/AdminComponents/Managers';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,8 @@ export default function App() {
         <Stack.Screen name='DrawerNavigation' component={DrawerNavigation}/>
         <Stack.Screen name='AdminDepartments' component={Departments} options={{headerShown: true, title: 'Departments'}}/>
         <Stack.Screen name='Employee' component={Employee}/>
+        <Stack.Screen name='Users' component={Users} options={{headerShown: true, title: "All Users"}}/>
+        <Stack.Screen name='AdminManager' component={Managers} options={{headerShown: true, title: "Managers"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
