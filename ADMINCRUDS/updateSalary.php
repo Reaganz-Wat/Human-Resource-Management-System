@@ -2,19 +2,19 @@
 
 require_once "../functions.php";
 
-// $jsonData = file_get_contents('php://input');
-// $_POST = json_decode($jsonData, true);
+$jsonData = file_get_contents('php://input');
+$data = json_decode($jsonData, true);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(
-        isset($_POST['salary_id']) &&
-        isset($_POST['amount']) &&
-        isset($_POST['modified_by'])
+        isset($data['salary_id']) &&
+        isset($data['amount']) &&
+        isset($data['modified_by'])
     ) {
 
-    $salary_id = $_POST['salary_id'];
-    $salary_amount = $_POST['amount'];
-    $modified_by = $_POST['modified_by'];
+    $salary_id = $data['salary_id'];
+    $salary_amount = $data['amount'];
+    $modified_by = $data['modified_by'];
 
     updateSalary($salary_id, $salary_amount, $modified_by);
 
