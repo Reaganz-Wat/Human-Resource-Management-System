@@ -5,12 +5,14 @@ import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
 import GetStartedScreen from './app/screens/GetStartedScreen';
 import OnboardingScreen from './app/screens/OnboardingScreen';
-import AdminDashboard from './app/screens/AdminDashboard';
 import DrawerNavigation from './app/screens/DrawerNavigation';
 import Departments from './app/screens/AdminComponents/Departments';
 import Employee from './app/screens/AdminComponents/Employee';
 import Users from './app/screens/AdminComponents/Users';
 import Managers from './app/screens/AdminComponents/Managers';
+import Salary from './app/screens/Salary';
+import Attendance from './app/screens/AdminComponents/Attendance';
+import MarkAttendance from './app/screens/AdminComponents/MarkAttendance';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +30,9 @@ export default function App() {
         <Stack.Screen name='Employee' component={Employee}/>
         <Stack.Screen name='Users' component={Users} options={{headerShown: true, title: "All Users"}}/>
         <Stack.Screen name='AdminManager' component={Managers} options={{headerShown: true, title: "Managers"}}/>
+        <Stack.Screen name='SalaryScreen' component={Salary} options={{headerShown: true, title: "Salary details"}}/>
+        <Stack.Screen name='AttendanceScreen' component={Attendance} options={{headerShown: true, title: "Mark Attendance"}}/>
+        <Stack.Screen name='MarkAttendanceScreen' component={MarkAttendance} options={{headerShown: true}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

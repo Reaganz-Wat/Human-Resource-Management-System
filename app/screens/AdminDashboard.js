@@ -3,7 +3,7 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from './AdminComponents/Home';
 import COLORS from '../components/Colors';
-import EmployeeDetails from './AdminComponents/EmployeeDetails';
+import LeaveRequest from './AdminComponents/LeaveRequest';
 import Settings from './AdminComponents/Settings';
 import Notifications from './AdminComponents/Notifications';
 
@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 // Components name
 const homeName = 'Home';
-const employeeName = 'EmployeeDetails';
+const employeeName = 'Leave request';
 const settingName = 'Settings';
 const notification = 'Notifications';
 
@@ -56,7 +56,7 @@ const AdminDashboard = ({navigation}) => {
                                         
                                     }
             }} name={homeName} component={Home}/>
-            <Tab.Screen name={employeeName} component={EmployeeDetails}/>
+            <Tab.Screen name={employeeName} component={LeaveRequest} options={{headerShown: false}}/>
             <Tab.Screen name={settingName} component={Settings}/>
             <Tab.Screen name={notification} component={Notifications}/>
         </Tab.Navigator>

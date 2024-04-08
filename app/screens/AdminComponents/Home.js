@@ -52,6 +52,12 @@ const Home = ({navigation}) => {
         if (itemID == 4) {
             navigation.navigate('Employee');
         }
+        if(itemID == 5) {
+            navigation.navigate('AttendanceScreen');
+        }
+        if(itemID == 6) {
+            navigation.navigate('SalaryScreen');
+        }
     }
 
 

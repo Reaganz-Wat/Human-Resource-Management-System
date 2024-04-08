@@ -1,31 +1,35 @@
 import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Image, Text, Pressable } from "react-native";
 import COLORS from "./Colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const MemberCard = ({ item, nextPage }) => {
+const MemberCard = ({ item, nextPage, ...props}) => {
   return (
-    <View style={styles.cardContainer} key={item.user_id}>
-      <View style={styles.card}>
-        <View>
-          <Image
-            source={require("../../assets/profile.png")}
-            style={styles.profilePic}
-          />
-        </View>
-        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ width: 80, flex: 1 }}>
-            <Text style={styles.textStyles}>{item.username}</Text>
-            <Text style={{ fontSize: 17 }}>{item.email}</Text>
-            <Text style={{ fontSize: 15 }}>{item.role}</Text>
+    <View style={styles.cardContainer}>
+      <Pressable
+      {...props}
+      >
+        <View style={styles.card}>
+          <View>
+            <Image
+              source={require("../../assets/profile.png")}
+              style={styles.profilePic}
+            />
           </View>
-          {nextPage ? (
-            <View style={{ width: 20 }}>
-              <Ionicons name="chevron-forward" size={23} color="blue" />
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <View style={{ width: 80, flex: 1 }}>
+              <Text style={styles.textStyles}>{item.username}</Text>
+              <Text style={{ fontSize: 17 }}>{item.email}</Text>
+              <Text style={{ fontSize: 15 }}>{item.role}</Text>
             </View>
-          ) : null}
+            {nextPage ? (
+              <View style={{ width: 20 }}>
+                <Ionicons name="chevron-forward" size={23} color="blue" />
+              </View>
+            ) : null}
+          </View>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 };
