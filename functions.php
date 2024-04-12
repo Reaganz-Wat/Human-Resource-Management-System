@@ -59,6 +59,18 @@ function fetch_user()
     global $link;
     mysqli_close($link);
 }
+function fetchEmployee()
+{
+    global $link;
+    $sql = "SELECT user_id, username, email, role FROM users WHERE role = 'Employee'";
+    $result = mysqli_query($link, $sql);
+    $employees = [];
+    while($row = mysqli_fetch_assoc($result)) {
+        $employees[] = $row;
+    }
+    mysqli_close($link);
+    return $employees;
+}
 
 // DEPARTMENT CRUDS
 // CREATE DEPARTMENT
@@ -163,10 +175,11 @@ function fetchManagers()
 
 // SALARIES CRUDS
 // CREATE SALARY
-function createSalary($employee_id, $salary_amount, $creator_id) {
+function createSalary($employee_id, $salary_amount, $creator_id)
+{
     global $link;
     $sql = "INSERT INTO salary (employee_id, salary_amount, created_by) VALUES ('{$employee_id}', '{$salary_amount}', '{$creator_id}')";
-    if($result = mysqli_query($link, $sql)) {
+    if ($result = mysqli_query($link, $sql)) {
         echo json_encode("Salary details created successfully");
     } else {
         echo json_encode("ERROR_ creating salary");
@@ -175,12 +188,13 @@ function createSalary($employee_id, $salary_amount, $creator_id) {
 }
 
 // READ SALARY
-function readSalaryDetails() {
+function readSalaryDetails()
+{
     global $link;
     $sql = "SELECT salary.salary_id, users.username, salary.start_date, salary.salary_amount FROM ((employees INNER JOIN salary ON employees.employee_id = salary.employee_id) INNER JOIN users ON employees.user_id = users.user_id)";
     $results = mysqli_query($link, $sql);
     $salaryDetails = [];
-    while($row = mysqli_fetch_assoc($results)) {
+    while ($row = mysqli_fetch_assoc($results)) {
         $salaryDetails[] = $row;
     }
     mysqli_close($link);
@@ -188,11 +202,12 @@ function readSalaryDetails() {
 }
 
 // EDIT SALARY
-function updateSalary($salary_id, $salary_amount, $modified_by) {
+function updateSalary($salary_id, $salary_amount, $modified_by)
+{
     global $link;
     $date_modified = date("Y-m-d H:i:s");
     $sql = "UPDATE salary SET salary_amount = '{$salary_amount}', modified_by = '{$modified_by}', modified = '{$date_modified}' WHERE salary_id = '{$salary_id}'";
-    if($result = mysqli_query($link, $sql)) {
+    if ($result = mysqli_query($link, $sql)) {
         echo json_encode("Salary updates successfully");
     } else {
         echo json_encode("ERROR_ updating salary details");
@@ -201,15 +216,55 @@ function updateSalary($salary_id, $salary_amount, $modified_by) {
 }
 
 // DELETE SALARY
-function deleteSalaryRecord($salary_id) {
+function deleteSalaryRecord($salary_id)
+{
     global $link;
     $sql = "DELETE FROM salary WHERE salary_id = '{$salary_id}'";
-    if($result = mysqli_query($link, $sql)) {
+    if ($result = mysqli_query($link, $sql)) {
         echo json_encode("Salary record deleted successfully");
     } else {
         echo json_encode("ERROR_ deleting salary record");
     }
-    mysqli_close($link);   
+    mysqli_close($link);
 }
 
-?>
+// ATTENDANCE CRUDS
+function createAttendance($employee_id, $creator_id, $date)
+{
+    global $link;
+    $sql = "INSERT INTO attendance (employee_id, created_by, date) VALUES ('{$employee_id}', '{$creator_id}', '{$date}')";
+    if ($result = mysqli_query($link, $sql)) {
+        echo json_encode("Attendance Marked");
+    } else {
+        echo json_encode("ERROR_ Creating attendance");
+    }
+    mysqli_close($link);
+}
+function readAttendance()
+{
+    global $link;
+    $sql = "SELECT * FROM attendance";
+    $result = mysqli_query($link, $sql);
+    $attendanceArray = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $attendanceArray[] = $row;
+    }
+    mysqli_close($link);
+    return $attendanceArray;
+}
+function editAttendance($id)
+{
+    global $link;
+    mysqli_close($link);
+}
+function deleteAttendance($id)
+{
+    global $link;
+    $sql = "DELETE FROM attendance WHERE attendance_id = '{$id}'";
+    if ($result = mysqli_query($link, $sql)) {
+        echo json_encode("Deleted attendance successfully");
+    } else {
+        echo json_encode("ERROR_ Deleting attendance");
+    }
+    mysqli_close($link);
+}
