@@ -11,6 +11,9 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import COLORS from "../../components/Colors";
 import { useRoute } from "@react-navigation/native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 
 const MarkAttendance = () => {
   const formatDate = (date) => {
@@ -19,11 +22,22 @@ const MarkAttendance = () => {
   const route = useRoute();
   const name = route.params.name;
   const firstLetter = route.params.name[0];
-  const [currentDate, setCurrentDate] = useState();
   const [attendanceStatus, setAttendanceStatus] = useState("Present");
-  const goToNextDay = () => {};
-  const goToPrevDay = () => {};
   const [modalVisible, setModalVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const handleConfirm = (date) => {
+    // console.warn("A date has been picked: ", date);
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+
   const modal = () => (
     <Modal
       animationType="fade"
@@ -41,7 +55,8 @@ const MarkAttendance = () => {
           backgroundColor: "rgba(0,0,0,0.7)",
         }}
       >
-        <View style={{
+        <View
+          style={{
             width: "90%",
             backgroundColor: "white",
             padding: 22,
@@ -49,8 +64,11 @@ const MarkAttendance = () => {
             alignItems: "center",
             borderRadius: 4,
             borderColor: "rgba(0, 0, 0, 0.1)",
-        }}>
-          <Text style={{ fontSize: 20 , marginBottom: 5}}>Attendance Submitted Successfully for {name}</Text>
+          }}
+        >
+          <Text style={{ fontSize: 20, marginBottom: 5 }}>
+            Attendance Submitted Successfully for {name}
+          </Text>
           <Button
             title="OK"
             onPress={() => {
@@ -67,7 +85,11 @@ const MarkAttendance = () => {
       {/* TopHeading and Date */}
       <View style={styles.topdate}>
         <Ionicons name="chevron-back" size={30} color="black" />
-        <Text style={{ alignSelf: "center", fontWeight: 'bold' }}>April 7, 2024</Text>
+        <Pressable style={{alignSelf: "center"}} onPress={showDatePicker}>
+          <Text style={{ fontWeight: "bold" }}>
+            {selectedDate == null?"Select Date":selectedDate.toLocaleString()}
+          </Text>
+        </Pressable>
         <Ionicons name="chevron-forward" size={30} color="black" />
       </View>
 
@@ -91,7 +113,9 @@ const MarkAttendance = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 30, color: "#fff", fontWeight: 'bold' }}>{firstLetter}</Text>
+            <Text style={{ fontSize: 30, color: "#fff", fontWeight: "bold" }}>
+              {firstLetter}
+            </Text>
           </View>
           <View>
             <Text
@@ -188,6 +212,14 @@ const MarkAttendance = () => {
 
       {/* Modal */}
       {modal()}
+      
+      {/* DatePicker */}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 };

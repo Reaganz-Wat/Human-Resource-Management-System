@@ -87,7 +87,7 @@ const Users = ({ navigation }) => {
         </View>
 
         {users.map((item) => (
-          <MemberCard item={item}/>
+          <MemberCard item={item} key={item.user_id}/>
         ))}
         
       </ScrollView>

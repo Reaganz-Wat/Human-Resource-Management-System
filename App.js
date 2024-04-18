@@ -13,6 +13,7 @@ import Managers from './app/screens/AdminComponents/Managers';
 import Salary from './app/screens/Salary';
 import Attendance from './app/screens/AdminComponents/Attendance';
 import MarkAttendance from './app/screens/AdminComponents/MarkAttendance';
+import Requests from './app/screens/AdminComponents/Requests';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,6 @@ export default function App() {
         <Stack.Screen name='GetStartedScreen' component={GetStartedScreen}/>
         <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>
         <Stack.Screen name='LoginScreen' component={LoginScreen}/>
-        {/* <Stack.Screen name='AdminDashboard' component={AdminDashboard}/> */}
         <Stack.Screen name='DrawerNavigation' component={DrawerNavigation}/>
         <Stack.Screen name='AdminDepartments' component={Departments} options={{headerShown: true, title: 'Departments'}}/>
         <Stack.Screen name='Employee' component={Employee}/>
@@ -37,6 +37,7 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

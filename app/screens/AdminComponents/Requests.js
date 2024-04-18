@@ -1,46 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
+  FlatList,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import COLORS from "../../components/Colors";
+import LeaveCard from "../../components/LeaveCard";
+import axios from "axios";
+import MyAPI from "../../components/API";
 
 const Requests = () => {
+  const [leaveD, setLeaveD] = useState([]);
+  const [value, setValue] = useState([]);
 
-    // Here i want to make the pending, when you click it shows approved 
-    // with the color changing to green
-    // and also when the cancel request is clicked, it shows red with the word canceled
-  const [status, setStatus] = useState();
+  const fetchLeave = async () => {
+    try {
+      const response = await axios.get(MyAPI.leaveRequestcruds);
+      const dataInfo = response.data;
+      setValue(dataInfo);
+      console.log(dataInfo);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
 
-  const leaveCard = () => (
-    <View style={styles.leaveCardStyle}>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-        Sick Leave Request
-      </Text>
-      <Text style={{ fontSize: 15 }}>08/04/2023 - 10/04/2023</Text>
-      <Text>Pending approval from Admin</Text>
-      <View style={styles.buttonStyles}>
-        <TouchableOpacity style={styles.touchStyles}>
-          <Text>Pending</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touchStyles}>
-          <Text>Cancel Request</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  // fetching the leave using useEffect hook
+  useEffect(() => {
+    fetchLeave();
+  }, []);
+
+  const [status, setStatus] = useState("Pending");
+
+  const renderLeaveCard = ({ item }) => <LeaveCard leaveDetails={item} />;
+
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {leaveCard()}
-        {leaveCard()}
-        {leaveCard()}
-        {leaveCard()}
-        {leaveCard()}
-      </ScrollView>
+      
+      <FlatList
+        keyExtractor={(Item) => Item.request_id}
+        data={value}
+        renderItem={renderLeaveCard}
+      />
+
     </View>
   );
 };
@@ -56,7 +58,11 @@ const styles = StyleSheet.create({
     elevation: 8,
     gap: 7,
     marginVertical: 5,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.blue,
+    borderRightWidth: 4,
+    borderRightColor: COLORS.grey,
   },
   buttonStyles: {
     flexDirection: "row",

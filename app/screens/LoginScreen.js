@@ -80,7 +80,9 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const go_to_admin = () => {
-    validate();
+    // Uncomment this validate() to authenticate the users
+    // validate();
+    navigation.navigate("DrawerNavigation");
   };
 
   return (
