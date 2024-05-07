@@ -62,7 +62,7 @@ function fetch_user()
 function fetchEmployee()
 {
     global $link;
-    $sql = "SELECT user_id, username, email, role FROM users WHERE role = 'Employee'";
+    $sql = "SELECT employees.employee_id, users.username, users.email, role FROM users INNER JOIN employees ON users.user_id = employees.user_id";
     $result = mysqli_query($link, $sql);
     $employees = [];
     while($row = mysqli_fetch_assoc($result)) {
@@ -191,7 +191,8 @@ function createSalary($employee_id, $salary_amount, $creator_id)
 function readSalaryDetails()
 {
     global $link;
-    $sql = "SELECT salary.salary_id, users.username, salary.start_date, salary.salary_amount FROM ((employees INNER JOIN salary ON employees.employee_id = salary.employee_id) INNER JOIN users ON employees.user_id = users.user_id)";
+    // getting the name, role, salary
+    $sql = "SELECT salary.salary_id, users.username, users.role, salary.salary_amount FROM ((employees INNER JOIN salary ON employees.employee_id = salary.employee_id) INNER JOIN users ON employees.user_id = users.user_id)";
     $results = mysqli_query($link, $sql);
     $salaryDetails = [];
     while ($row = mysqli_fetch_assoc($results)) {
@@ -229,10 +230,10 @@ function deleteSalaryRecord($salary_id)
 }
 
 // ATTENDANCE CRUDS
-function createAttendance($employee_id, $creator_id, $date)
+function createAttendance($employee_id, $creator_id, $date, $status)
 {
     global $link;
-    $sql = "INSERT INTO attendance (employee_id, created_by, date) VALUES ('{$employee_id}', '{$creator_id}', '{$date}')";
+    $sql = "INSERT INTO attendance (employee_id, created_by, date, status) VALUES ('{$employee_id}', '{$creator_id}', '{$date}', '{$status}')";
     if ($result = mysqli_query($link, $sql)) {
         echo json_encode("Attendance Marked");
     } else {
@@ -240,6 +241,7 @@ function createAttendance($employee_id, $creator_id, $date)
     }
     mysqli_close($link);
 }
+
 function readAttendance()
 {
     global $link;
@@ -268,3 +270,73 @@ function deleteAttendance($id)
     }
     mysqli_close($link);
 }
+
+// LEAVE REQUEST CRUDS
+// CREATE LEAVETABLE
+function createLeaveRequest($leaveType, $employee_id, $start_date, $end_date, $reason, $created_by) {
+    global $link;
+    $sql = "INSERT INTO leaverequest (employee_id, leave_type, start_date, end_date, reason, created_by) VALUES ('{$employee_id}', '{$leaveType}', '{$start_date}', '{$end_date}', '{$reason}', '{$created_by}')";
+    if($results = mysqli_query($link, $sql)) {
+        echo json_encode("Leave created successfully");
+    } else {
+        echo json_decode("ERROR_ creating leave");
+    }
+    mysqli_close($link);
+}
+function readLeaveRequest() {
+    global $link;
+    $sql = "SELECT leaverequest.request_id, users.username, leaverequest.leave_type, leaverequest.start_date, leaverequest.end_date  FROM ((leaverequest INNER JOIN employees ON leaverequest.employee_id = employees.employee_id) INNER JOIN users ON employees.user_id = users.user_id)";
+    $results = mysqli_query($link, $sql);
+    $resources = [];
+    while($row = mysqli_fetch_assoc($results)) {
+        $resources[] = $row;
+    }
+    mysqli_close($link);
+    return $resources;
+}
+
+// JOBS CRUDS
+// CREATE JOBS
+function createJobs() {}
+function readJobs() {
+    global $link;
+    $sql = "SELECT * FROM jobs";
+    $results = mysqli_query($link, $sql);
+    $jobs = [];
+    while($row = mysqli_fetch_assoc($results)) {
+        $jobs[] = $row;
+    }
+    mysqli_close($link);
+
+    return $jobs;
+}
+function deleteJobs($id) {
+    global $link;
+    $sql = "DELETE FROM jobs WHERE job_id = '{$id}' ";
+    if($result = mysqli_query( $link, $sql)) {
+        echo json_encode("Deleted successfully");
+    } else {
+        echo json_encode("ERROR_ DELETING");
+    }
+    mysqli_close($link);
+}
+
+// EDIT JOBS
+function editJobs($id, $title, $description, $modified_by) {
+    global $link;
+    $modified_date = date("Y-m-d H:i:s");
+    // $sql = "UPDATE jobs SET title='{$title}', description='{$description}', modified_by='{$modified_by}', modified='{$modified_date}' WHERE job_id='{$id}' ";
+    $sql = "UPDATE jobs SET title='$title', description='$description', modified='$modified_date', modified_by='$modified_by' WHERE job_id='$id' ";
+    $result = mysqli_query($link, $sql);
+    if($result) {
+        echo json_encode("Job edited successfully");
+    } else {
+        echo json_encode("ERROR_: editing jobs");
+    }
+
+    mysqli_close($link);
+}
+function readById($id) {}
+
+
+?>
