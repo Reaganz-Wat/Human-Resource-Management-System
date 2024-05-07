@@ -58,6 +58,9 @@ const Home = ({navigation}) => {
         if(itemID == 6) {
             navigation.navigate('SalaryScreen');
         }
+        if(itemID == 8) {
+            navigation.navigate("JobScreen");
+        }
     }
 
 

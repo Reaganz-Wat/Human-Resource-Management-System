@@ -11,9 +11,9 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import COLORS from "../../components/Colors";
 import { useRoute } from "@react-navigation/native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import axios from "axios";
+import MyAPI from "../../components/API";
 
 const MarkAttendance = () => {
   const formatDate = (date) => {
@@ -21,11 +21,26 @@ const MarkAttendance = () => {
   };
   const route = useRoute();
   const name = route.params.name;
+  const user_id = route.params.id;
   const firstLetter = route.params.name[0];
   const [attendanceStatus, setAttendanceStatus] = useState("Present");
   const [modalVisible, setModalVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+
+  // making a request to the database to create attendance record
+  const markAttendanceToDatabase = () => {
+    axios
+      .post(MyAPI.markAttendancecruds, {
+        employee_id: user_id,
+        creator_id: 1,
+        date: selectedDate.toLocaleString(),
+        status: attendanceStatus,
+      })
+      .then((response) => console.log(response.data))
+      .catch((err) => console.error(err));
+  };
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -66,9 +81,13 @@ const MarkAttendance = () => {
             borderColor: "rgba(0, 0, 0, 0.1)",
           }}
         >
-          <Text style={{ fontSize: 20, marginBottom: 5 }}>
+          
+          {selectedDate == null? (<Text style={{ fontSize: 20, marginBottom: 5, color: 'red' }}>
+            Please select the date
+          </Text>): (<Text style={{ fontSize: 20, marginBottom: 5 }}>
             Attendance Submitted Successfully for {name}
-          </Text>
+          </Text>)}
+
           <Button
             title="OK"
             onPress={() => {
@@ -85,9 +104,11 @@ const MarkAttendance = () => {
       {/* TopHeading and Date */}
       <View style={styles.topdate}>
         <Ionicons name="chevron-back" size={30} color="black" />
-        <Pressable style={{alignSelf: "center"}} onPress={showDatePicker}>
+        <Pressable style={{ alignSelf: "center" }} onPress={showDatePicker}>
           <Text style={{ fontWeight: "bold" }}>
-            {selectedDate == null?"Select Date":selectedDate.toLocaleString()}
+            {selectedDate == null
+              ? "Select Date"
+              : selectedDate.toLocaleString()}
           </Text>
         </Pressable>
         <Ionicons name="chevron-forward" size={30} color="black" />
@@ -169,10 +190,10 @@ const MarkAttendance = () => {
         <View style={styles.radioButtonCard}>
           <Pressable
             onPress={() => {
-              setAttendanceStatus("halfday");
+              setAttendanceStatus("Halfday");
             }}
           >
-            {attendanceStatus === "halfday" ? (
+            {attendanceStatus === "Halfday" ? (
               <Ionicons name="radio-button-on" size={30} color="black" />
             ) : (
               <Ionicons name="radio-button-off" size={30} color="black" />
@@ -184,10 +205,10 @@ const MarkAttendance = () => {
         <View style={styles.radioButtonCard}>
           <Pressable
             onPress={() => {
-              setAttendanceStatus("holiday");
+              setAttendanceStatus("Holiday");
             }}
           >
-            {attendanceStatus === "holiday" ? (
+            {attendanceStatus === "Holiday" ? (
               <Ionicons name="radio-button-on" size={30} color="black" />
             ) : (
               <Ionicons name="radio-button-off" size={30} color="black" />
@@ -203,6 +224,8 @@ const MarkAttendance = () => {
         style={styles.submitButton}
         onPress={() => {
           setModalVisible(!modalVisible);
+          markAttendanceToDatabase();
+          // console.log("ID: ", user_id);
         }}
       >
         <Text style={[styles.textStyles, { color: "#fff", fontSize: 17 }]}>
@@ -212,7 +235,7 @@ const MarkAttendance = () => {
 
       {/* Modal */}
       {modal()}
-      
+
       {/* DatePicker */}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}

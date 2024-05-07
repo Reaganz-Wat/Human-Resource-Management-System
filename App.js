@@ -1,6 +1,6 @@
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
+import { Modal, StyleSheet, Text } from 'react-native';
 import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
 import GetStartedScreen from './app/screens/GetStartedScreen';
@@ -13,14 +13,15 @@ import Managers from './app/screens/AdminComponents/Managers';
 import Salary from './app/screens/Salary';
 import Attendance from './app/screens/AdminComponents/Attendance';
 import MarkAttendance from './app/screens/AdminComponents/MarkAttendance';
-import Requests from './app/screens/AdminComponents/Requests';
+import SalaryDetailPage from './app/screens/AdminComponents/SalaryDetailedPage';
+import Jobs from './app/screens/AdminComponents/Jobs';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{headerShown: false}} >
         <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
         <Stack.Screen name='GetStartedScreen' component={GetStartedScreen}/>
         <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>
@@ -33,6 +34,8 @@ export default function App() {
         <Stack.Screen name='SalaryScreen' component={Salary} options={{headerShown: true, title: "Salary details"}}/>
         <Stack.Screen name='AttendanceScreen' component={Attendance} options={{headerShown: true, title: "Mark Attendance"}}/>
         <Stack.Screen name='MarkAttendanceScreen' component={MarkAttendance} options={{headerShown: true}} />
+        <Stack.Screen name='SalaryDetailScreen' component={SalaryDetailPage} options={{headerShown: true}} />
+        <Stack.Screen name='JobScreen' component={Jobs} options={{headerShown: true, title: "Jobs"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

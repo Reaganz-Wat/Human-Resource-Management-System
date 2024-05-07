@@ -7,6 +7,7 @@ const MemberCard = ({ item, nextPage, ...props}) => {
   return (
     <View style={styles.cardContainer}>
       <Pressable
+      // This allows you to write the whole code specific to allow action takes place without mentioning it here
       {...props}
       >
         <View style={styles.card}>
@@ -22,6 +23,8 @@ const MemberCard = ({ item, nextPage, ...props}) => {
               <Text style={{ fontSize: 17 }}>{item.email}</Text>
               <Text style={{ fontSize: 15 }}>{item.role}</Text>
             </View>
+
+            {/* This code renders the arrow based on the props, that is nextPage */}
             {nextPage ? (
               <View style={{ width: 20 }}>
                 <Ionicons name="chevron-forward" size={23} color="blue" />

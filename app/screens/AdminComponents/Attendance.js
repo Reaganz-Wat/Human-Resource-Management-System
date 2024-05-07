@@ -9,7 +9,10 @@ function Attendance({ navigation }) {
   const fetchUsers = () => {
     axios
       .get(MyAPI.fetchEmployees)
-      .then((response) => setUsers(response.data))
+      .then((response) => {
+        setUsers(response.data);
+        // console.log(response.data);
+      })
       .catch((err) => console.error(err));
   };
   useEffect(() => {
@@ -17,8 +20,8 @@ function Attendance({ navigation }) {
     console.log("Users: ", users);
   }, []);
 
-  const markAttendancePage = (name) => {
-    navigation.navigate("MarkAttendanceScreen", {name});
+  const markAttendancePage = (name, id) => {
+    navigation.navigate("MarkAttendanceScreen", { name, id });
   };
 
   return (
@@ -27,7 +30,13 @@ function Attendance({ navigation }) {
         {users.map((item) => (
           // key is needed for each items
           <View key={item.user_id}>
-            <MemberCard item={item} nextPage onPress={()=>markAttendancePage(item.username)} />
+            <MemberCard
+              item={item}
+              nextPage
+              onPress={() =>
+                markAttendancePage(item.username, item.employee_id)
+              }
+            />
           </View>
         ))}
       </ScrollView>

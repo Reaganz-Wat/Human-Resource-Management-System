@@ -1,62 +1,77 @@
 import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
-import COLORS from "./Colors";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 
-const SalaryCard = ({ item, nextPage }) => {
+const SalaryCard = ({ item, openModal, setSalaryID, ...props }) => {
   return (
-    <View style={styles.cardContainer} key={item.salary_id}>
-      <View style={styles.card}>
-        <View>
-          <Image
-            source={require("../../assets/profile.png")}
-            style={styles.profilePic}
-          />
-        </View>
-        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ width: 80, flex: 1 }}>
-            <Text style={styles.textStyles}>{item.username}</Text>
-            <Text style={{ fontSize: 17 }}>{item.start_date}</Text>
-            <Text style={{ fontSize: 15 }}>$ {item.salary_amount}</Text>
-          </View>
-          {nextPage ? (
-            <View style={{ width: 20 }}>
-              <Ionicons name="chevron-forward" size={23} color="blue" />
-            </View>
-          ) : null}
+    // Render individual employee item
+    <TouchableOpacity style={styles.card} >
+      <Image
+        source={require("../../assets/profile.png")}
+        style={styles.image}
+      />
+      <View style={styles.cardContent}>
+        <Text style={styles.employeeName}>{item.username}</Text>
+        <Text style={styles.employeeInfo}>{item.role}</Text>
+        <View style={styles.salaryContainer}>
+          <Text style={styles.employeeSalary}>
+            Salary: ${item.salary_amount}
+          </Text>
+          <TouchableOpacity style={styles.updateButton} onPress={
+            ()=>{
+              openModal();
+              setSalaryID(item.salary_id);
+            }
+            }>
+            <Text style={styles.updateTextStyle}>Update</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    flex: 1,
-    margin: 5,
-    borderRadius: 5,
-  },
   card: {
-    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
     flexDirection: "row",
-    gap: 20,
-    marginHorizontal: 5,
     alignItems: "center",
-    borderLeftWidth: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderLeftColor: COLORS.blue,
-    backgroundColor: COLORS.white,
-    elevation: 5,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginRight: 15,
+  },
+  cardContent: {
+    flex: 1,
+  },
+  employeeName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  employeeInfo: {
+    fontSize: 16,
+    color: "#666",
+  },
+  employeeSalary: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+  updateButton: {
+    backgroundColor: "green",
+    padding: 4,
     borderRadius: 5,
   },
-  profilePic: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
-    marginLeft: 8,
+  updateTextStyle: { color: "#fff" },
+  salaryContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
   },
-  textStyles: { fontSize: 20, flexWrap: "wrap" },
 });
 
 export default SalaryCard;
