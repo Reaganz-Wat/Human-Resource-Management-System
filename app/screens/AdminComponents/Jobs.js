@@ -18,8 +18,11 @@ const Jobs = () => {
   const [jobID, setJobID] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [salaryRange, setSalaryRange] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [crudStatus, setCrudStatus] = useState(null);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -60,6 +63,30 @@ const Jobs = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const createJobsInDatabase = async () => {
+    // console.log("Title: ", editTitle);
+    // console.log("Description: ", editDescription);
+    // console.log("Salary Range: ", salaryRange);
+
+
+    try {
+      const response = await axios.post(MyAPI.createJobs, {
+        title: editTitle,
+        description: editDescription,
+        salary_range: salaryRange,
+      });
+      const response_data = await response.data;
+      console.log("Create Jobs Response: ", response_data);
+    } catch (err) {
+      console.error(err);
+    }
+
+
+    setCrudStatus("");
+    setRefresh(!refresh);
+    
   };
 
   const deleteDataToDatabase = async () => {
@@ -106,50 +133,92 @@ const Jobs = () => {
 
   // Custom modal content for the CustomModal
   const customModalContent = () => (
+
+    // Renders thes components based on some conditions
     <View>
       <TextInput
         style={styles.input}
-        value={editTitle}
+        value={crudStatus == "create" ? null : editTitle}
         onChangeText={(text) => setEditTitle(text)}
         placeholder="Title"
       />
       <TextInput
         style={[styles.input, { height: 100 }]}
-        value={editDescription}
+        value={crudStatus == "create" ? null : editDescription}
         onChangeText={(text) => setEditDescription(text)}
         placeholder="Description"
         multiline
       />
-      {/* Add other input fields for editing job details */}
+
+      {/* Shows when only creating a new job */}
+      {crudStatus == "create" ? (
+        <TextInput
+          style={[styles.input, { height: 100 }]}
+          value={crudStatus == "create" ? null : editDescription}
+          onChangeText={(text) => setSalaryRange(text)}
+          placeholder="Salary range e.g 300000 - 450000"
+          multiline
+        />
+      ) : null}
+      
+      {/* All these components only shows when creating the jobs, using conditionals */}
       {/* Edit Button */}
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: "green" }]}
-        onPress={() => {
-          handleEdit();
-          sendintDataToDatabase();
-        }}
-      >
-        <Text style={styles.buttonText}>Edit</Text>
-      </TouchableOpacity>
+      {crudStatus == "create" ? null : (
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "green" }]}
+          onPress={() => {
+            handleEdit();
+            sendintDataToDatabase();
+          }}
+        >
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Delete Button */}
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: "red" }]}
-        onPress={() => {
-          setModalVisible(false);
-          deleteDataToDatabase();
-        }}
-      >
-        <Text style={styles.buttonText}>Delete</Text>
-      </TouchableOpacity>
+      {crudStatus == "create" ? null : (
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "red" }]}
+          onPress={() => {
+            setModalVisible(false);
+            deleteDataToDatabase();
+          }}
+        >
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Delete Button */}
+      {crudStatus == "create" ? (
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "green" }]}
+          onPress={() => {
+            setModalVisible(false);
+            createJobsInDatabase();
+          }}
+        >
+          <Text style={styles.buttonText}>Create Jobs Detail</Text>
+        </TouchableOpacity>
+      ) : null}
 
       {/* Cancel button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => setModalVisible(false)}
+        onPress={() => {
+          setModalVisible(false)
+          setCrudStatus("");
+        }}
       >
         <Text style={styles.buttonText}>Cancel</Text>
       </TouchableOpacity>
+    </View>
+  );
+
+  // Custom modal content for the addJobs
+  const addJobsModalContent = () => (
+    <View>
+      <TextInput placeholder="Enter title" />
+      <TextInput placeholder="Descriptions" />
     </View>
   );
 
@@ -169,8 +238,23 @@ const Jobs = () => {
         />
       }
 
+      <FloatingButton
+        onPress={() => {
+          setCrudStatus("create");
+          setModalVisible(!modalVisible);
+        }}
+      />
 
-      <FloatingButton />
+      {/* Modal triggered by the floating button to add jobs */}
+      {/* {
+        <CustomModal
+          visible={modalVisible}
+          onClose={() => {
+            setModalVisible(!modalVisible)
+          }}
+          contentComponent={addJobsModalContent}
+        />
+      } */}
     </View>
   );
 };

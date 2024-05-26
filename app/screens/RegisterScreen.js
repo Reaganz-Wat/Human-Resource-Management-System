@@ -39,13 +39,6 @@ const RegisterScreen = ({ navigation }) => {
   const errorMsg = "Oops! Error Occured";
 
   const registerMember = () => {
-    // console.log("FullName: ", fullName);
-    // console.log("Email: ", email);
-    // console.log("Password: ", password);
-    // console.log("Phone Number: ", phoneNumber);
-    // console.log("Department id: ", department_id);
-    // console.log("Title: ", title);
-    // console.log("Role: ", selectedValue);
 
     fetch(MyAPI.registerUser, {
         method: "POST",

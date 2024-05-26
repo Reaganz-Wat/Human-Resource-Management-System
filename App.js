@@ -15,6 +15,14 @@ import Attendance from './app/screens/AdminComponents/Attendance';
 import MarkAttendance from './app/screens/AdminComponents/MarkAttendance';
 import SalaryDetailPage from './app/screens/AdminComponents/SalaryDetailedPage';
 import Jobs from './app/screens/AdminComponents/Jobs';
+import EmployeeDashboard from './app/screens/EmployeeComponents/EmployeeDashboard';
+import EmpProfile from './app/screens/EmployeeComponents/EmpProfile';
+import EmpAttendance from './app/screens/EmployeeComponents/EmpAttendance';
+import EmpSalary from './app/screens/EmployeeComponents/EmpSalary';
+import ManagerDashboard from './app/screens/ManagerComponents/ManagerDashboard';
+import EmpLeaveRequest from './app/screens/EmployeeComponents/EmpLeaveRequest';
+import EmpPerformanceReview from './app/screens/EmployeeComponents/EmpPerformanceReview';
+import Leaves from './app/screens/AdminComponents/Leaves';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +44,16 @@ export default function App() {
         <Stack.Screen name='MarkAttendanceScreen' component={MarkAttendance} options={{headerShown: true}} />
         <Stack.Screen name='SalaryDetailScreen' component={SalaryDetailPage} options={{headerShown: true}} />
         <Stack.Screen name='JobScreen' component={Jobs} options={{headerShown: true, title: "Jobs"}}/>
+        <Stack.Screen name='EmployeeDashboardScreen' component={EmployeeDashboard} />
+        <Stack.Screen name='EmployeeProfile' component={EmpProfile} />
+        <Stack.Screen name='EmployeeAttendance' component={EmpAttendance} options={{headerShown: true, title: "Attendance"}} />
+        <Stack.Screen name='EmployeeSalaryScreen' component={EmpSalary} options={{headerShown: true, title: "Salary Details"}} />
+        <Stack.Screen name='ManagerDashboardScreen' component={ManagerDashboard} />
+        <Stack.Screen name='LeaveRequestsScreen' component={EmpLeaveRequest} options={{headerShown: true, title: "Request Leave"}} />
+        <Stack.Screen name='EmployeePerformanceScreen' component={EmpPerformanceReview} />
+        
+
+        <Stack.Screen name='Leaves' component={Leaves} />
       </Stack.Navigator>
     </NavigationContainer>
   );

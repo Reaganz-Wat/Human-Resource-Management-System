@@ -1,59 +1,81 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, LayoutAnimation } from "react-native";
 import COLORS from "./Colors";
 
-const LeaveCard = ({ leaveDetails }) => {
-  const [status, setStatus] = useState("Pending");
+const LeaveCard = ({ leaveDetails, updateLeaveStatus, isAdmin }) => {
+  const {
+    request_id,
+    username,
+    leave_type,
+    start_date,
+    end_date,
+    status: initialStatus,
+    reason,
+    created
+  } = leaveDetails;
+
+  const [status, setStatus] = useState(initialStatus || "Pending");
+  const [isReasonVisible, setIsReasonVisible] = useState(false);
+
+  const handleStatusChange = (newStatus) => {
+    setStatus(newStatus);
+    if (updateLeaveStatus) {
+      updateLeaveStatus(request_id, newStatus); // Update the status in the database
+    }
+  };
+
+  const toggleReasonVisibility = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsReasonVisible(!isReasonVisible);
+  };
+
   return (
     <View style={styles.leaveCardStyle}>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-        {leaveDetails.leave_type}
-      </Text>
-      <View style={{ flexDirection: "row", gap: 10 }}>
-        <View
-          style={{
-            width: 40,
-            height: 40,
-            backgroundColor: COLORS.blue,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 10,
-          }}
-        >
-          <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-            {leaveDetails.username[0]}
-          </Text>
+      <Text style={styles.leaveType}>{leave_type}</Text>
+      <View style={styles.userInfoContainer}>
+        <View style={styles.userIcon}>
+          <Text style={styles.userIconText}>{username[0]}</Text>
         </View>
-        <Text style={{ alignSelf: "center", fontSize: 15 }}>
-          {leaveDetails.username}
+        <Text style={styles.username}>{username}</Text>
+      </View>
+      <Text style={styles.dates}>{start_date} - {end_date === "0000-00-00" ? "Ongoing" : end_date}</Text>
+      <Text style={styles.status}>Status: {status}</Text>
+      <TouchableOpacity onPress={toggleReasonVisibility} style={styles.reasonButton}>
+        <Text style={styles.reasonButtonText}>
+          {isReasonVisible ? "Hide Reason" : "Show Reason"}
         </Text>
-      </View>
-      <Text style={{ fontSize: 15 }}>
-        {leaveDetails.start_date} - {leaveDetails.end_date}
-      </Text>
-      <View style={styles.buttonStyles}>
-        <TouchableOpacity
-          style={[
-            styles.touchStyles,
-            status == "Accepted"
-              ? { backgroundColor: "green" }
-              : status == "Cancelled"
-              ? { backgroundColor: COLORS.red }
-              : null,
-          ]}
-        >
-          <Text>
-            {status == "Pending"
-              ? "Pending"
-              : status == "Accepted"
-              ? "Accepted"
-              : "Cancelled"}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touchStyles}>
-          <Text>Cancel Request</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
+      {isReasonVisible && <Text style={styles.reasonText}>{reason}</Text>}
+      <Text style={styles.createdDate}>Created on: {created}</Text>
+      {isAdmin && (
+        <View style={styles.buttonStyles}>
+          <TouchableOpacity
+            style={[
+              styles.touchStyles,
+              status === "Accepted"
+                ? { backgroundColor: "green" }
+                : status === "Cancelled"
+                ? { backgroundColor: COLORS.red }
+                : null,
+            ]}
+            onPress={() => handleStatusChange("Accepted")}
+          >
+            <Text>
+              {status === "Pending"
+                ? "Pending"
+                : status === "Accepted"
+                ? "Accepted"
+                : "Cancelled"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchStyles}
+            onPress={() => handleStatusChange("Cancelled")}
+          >
+            <Text>Cancel Request</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -64,7 +86,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     elevation: 8,
-    gap: 7,
     marginVertical: 5,
     marginHorizontal: 10,
     borderLeftWidth: 4,
@@ -72,11 +93,66 @@ const styles = StyleSheet.create({
     borderRightWidth: 4,
     borderRightColor: COLORS.grey,
   },
+  leaveType: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: COLORS.darkBlue,
+    marginBottom: 5,
+  },
+  userInfoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  userIcon: {
+    width: 40,
+    height: 40,
+    backgroundColor: COLORS.blue,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  userIconText: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  username: {
+    fontSize: 15,
+    color: COLORS.darkGrey,
+  },
+  dates: {
+    fontSize: 15,
+    color: COLORS.darkGrey,
+    marginBottom: 5,
+  },
+  status: {
+    fontSize: 15,
+    color: COLORS.darkGrey,
+    marginBottom: 5,
+  },
+  reasonButton: {
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  reasonButtonText: {
+    color: COLORS.blue,
+    fontWeight: "bold",
+  },
+  reasonText: {
+    fontSize: 15,
+    color: COLORS.darkGrey,
+    marginBottom: 5,
+  },
+  createdDate: {
+    fontSize: 13,
+    color: COLORS.lightGrey,
+    marginBottom: 10,
+  },
   buttonStyles: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 50,
-    paddingHorizontal: 10,
+    justifyContent: "space-between",
   },
   touchStyles: {
     flex: 1,
@@ -84,7 +160,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-    paddingVertical: 2,
+    paddingVertical: 5,
+    marginHorizontal: 5,
   },
 });
 
