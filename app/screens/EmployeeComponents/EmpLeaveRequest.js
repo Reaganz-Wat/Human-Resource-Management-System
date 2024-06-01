@@ -5,7 +5,7 @@ import axios, { Axios } from "axios";
 import COLORS from "../../components/Colors";
 import MyAPI from "../../components/API";
 import FloatingButton from "../../components/FloatingButton";
-import { TextInput } from "react-native-gesture-handler";
+import { RefreshControl, TextInput } from "react-native-gesture-handler";
 import CustomModal from "../../components/CustomModal";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import LeaveCard from "../../components/LeaveCard";
@@ -20,6 +20,7 @@ const EmpLeaveRequest = () => {
   const [reason, setReason] = useState("");
   const [isStartDatePickerVisible, setStartDatePickerVisible] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchLeave = async (id) => {
     try {
@@ -28,11 +29,20 @@ const EmpLeaveRequest = () => {
       });
       const dataInfo = response.data;
       setValue(dataInfo);
-      console.log(dataInfo);
+      console.log("DataInfo: ", dataInfo);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    if (userId !== null){
+      fetchLeave(userId).then(()=>{setRefreshing(false)});
+    } else {
+      console.log("UserId: ", userId)
+    }
+  }
 
   useEffect(() => {
     const getUserIdFromStorage = async () => {
@@ -49,6 +59,14 @@ const EmpLeaveRequest = () => {
 
     getUserIdFromStorage();
   }, []);
+
+  const validate = () => {
+    if (startDate === "" && endDate === "" && leaveType === "" && reason === "") {
+      alert("Please enter a valid details");
+    } else {
+      saveLeaveRequest();
+    }
+  }
 
   const saveLeaveRequest = async () => {
     try {
@@ -136,7 +154,8 @@ const EmpLeaveRequest = () => {
           onPress={() => {
             // Add logic to submit leave
             setModalVisible(false);
-            saveLeaveRequest();
+            validate();
+            //saveLeaveRequest();
           }}
         >
           <Text style={styles.buttonText}>Submit Leave</Text>
@@ -166,6 +185,9 @@ const EmpLeaveRequest = () => {
         keyExtractor={(item) => item.request_id}
         data={value}
         renderItem={renderLeaveCard}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
 
       {/* Modal for entering leave request */}

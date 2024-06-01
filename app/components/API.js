@@ -22,6 +22,11 @@ const MyAPI = {
     update_employee_leave: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/update_employee_attendance.php`,
     get_accepted_leaves: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/get_accepted_leave.php`,
     get_employee_leaves_by_id: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/get_leave_by_id.php`,
-    create_employee_leaves: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/create_employee_leave.php`
+    create_employee_leaves: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/create_employee_leave.php`,
+    create_benefit: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/create_benefit.php`,
+    create_salary: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/insertSalary.php`,
+    get_emp_sal: `http://${IP_ADDRESS}WEB APPLICATIONS/human resource system/ADMINCRUDS/get_employeeSal.php`,
+    benefits_endpoint: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/getBenefits.php`,
+    edit_benefit: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/edit_benefit.php`
 };
 export default MyAPI;

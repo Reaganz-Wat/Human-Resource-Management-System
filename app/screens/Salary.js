@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
   TextInput,
   StyleSheet,
 } from "react-native";
@@ -12,10 +11,13 @@ import SalaryCard from "../components/SalaryCard";
 import axios from "axios";
 import MyAPI from "../components/API";
 import CustomModal from "../components/CustomModal";
+import CustomButton from "../components/CustomButton";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const Salary = ({ navigation }) => {
   // variables
   const [employees, setEmployees] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Function to fetch salary from the database
   const fetchSalary = () => {
@@ -27,6 +29,12 @@ const Salary = ({ navigation }) => {
       })
       .catch((err) => console.error(err));
   };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchSalary();
+    setRefreshing(false);
+  }
 
   const updateSalaryToDatabase = async () => {
     try {
@@ -41,7 +49,6 @@ const Salary = ({ navigation }) => {
       console.error("Error updating salary:", error);
     }
   };
-  
 
   // POINTS TO NOTE TOMORROW
   // 1. TRY TO IMPLEMENT THE ASYNC STORAGE TO GET THE LOGGED_IN ID
@@ -60,6 +67,7 @@ const Salary = ({ navigation }) => {
 
   // update text variable
   const [text, setText] = useState("");
+
 
   // Function to open modal
   const openModal = () => {
@@ -90,8 +98,8 @@ const Salary = ({ navigation }) => {
    */
   const UpdateFormContent = ({ onClose }) => (
     <View>
-      <Text>$123,000</Text>
-      <TextInput placeholder="Update Price" onChangeText={setText}></TextInput>
+      <Text style={{fontSize: 15}}>Update Salary</Text>
+      <TextInput placeholder="Update Price" onChangeText={setText} value={text}></TextInput>
       <View style={{ flexDirection: "row", gap: 3, justifyContent: "center" }}>
         <TouchableOpacity
           style={{
@@ -130,6 +138,7 @@ const Salary = ({ navigation }) => {
       key={item.salary_id}
       openModal={openModal}
       setSalaryID={setSalaryId}
+      setText={setText}
     />
   );
 
@@ -140,11 +149,22 @@ const Salary = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Salary Management</Text>
+
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+      }}>
+        <CustomButton title={"Add Salary"} color={"blue"} onPress={()=>{navigation.navigate("AddSalaryScreen")}} />
+      </View>
+
       <FlatList
         data={employees}
         renderItem={renderEmployeeItem}
         keyExtractor={(item) => item.salary_id}
         style={styles.employeeList}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
       />
 
       {/* This is the Custom Modal */}

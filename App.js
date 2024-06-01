@@ -1,6 +1,6 @@
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Modal, StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
 import GetStartedScreen from './app/screens/GetStartedScreen';
@@ -23,13 +23,17 @@ import ManagerDashboard from './app/screens/ManagerComponents/ManagerDashboard';
 import EmpLeaveRequest from './app/screens/EmployeeComponents/EmpLeaveRequest';
 import EmpPerformanceReview from './app/screens/EmployeeComponents/EmpPerformanceReview';
 import Leaves from './app/screens/AdminComponents/Leaves';
+import Reports from './app/screens/AdminComponents/Reports';
+import EmployeeBenefits from './app/screens/EmployeeComponents/EmployeeBenefits';
+import AdminEmployeeBenefits from './app/screens/AdminComponents/AdminEmployeeBenefits';
+import AddSalary from './app/screens/AdminComponents/AddSalary';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='OnboardingScreen'>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='EmployeeBenefits'>
         <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
         <Stack.Screen name='GetStartedScreen' component={GetStartedScreen}/>
         <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>
@@ -51,8 +55,10 @@ export default function App() {
         <Stack.Screen name='ManagerDashboardScreen' component={ManagerDashboard} />
         <Stack.Screen name='LeaveRequestsScreen' component={EmpLeaveRequest} options={{headerShown: true, title: "Request Leave"}} />
         <Stack.Screen name='EmployeePerformanceScreen' component={EmpPerformanceReview} />
-        
-
+        <Stack.Screen name='ReportScreen' component={Reports} options={{headerShown: true, title: "Reports"}}/>
+        <Stack.Screen name='EmployeeBenefits' component={EmployeeBenefits} options={{headerShown: true, title: "Benefit Programs"}}/>
+        <Stack.Screen name='AdminEmployeeBenefits' component={AdminEmployeeBenefits} options={{headerShown: true, title: "Employee Benefits Programs"}} />
+        <Stack.Screen name='AddSalaryScreen' component={AddSalary} options={{headerShown: true, title: "Add Salary"}}/>
         <Stack.Screen name='Leaves' component={Leaves} />
       </Stack.Navigator>
     </NavigationContainer>

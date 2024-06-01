@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 
-const SalaryCard = ({ item, openModal, setSalaryID, ...props }) => {
+const SalaryCard = ({ item, openModal, setSalaryID, setText, ...props }) => {
   return (
     // Render individual employee item
     <TouchableOpacity style={styles.card} >
@@ -20,6 +20,7 @@ const SalaryCard = ({ item, openModal, setSalaryID, ...props }) => {
             ()=>{
               openModal();
               setSalaryID(item.salary_id);
+              setText(item.salary_amount);
             }
             }>
             <Text style={styles.updateTextStyle}>Update</Text>

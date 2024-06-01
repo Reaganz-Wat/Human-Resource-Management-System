@@ -50,7 +50,8 @@ const style = StyleSheet.create({
         backgroundColor: COLORS.light,
         flexDirection: 'row',
         borderWidth: 0.5,
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 5
     }
 });
 

@@ -9,9 +9,9 @@ const Home = ({navigation}) => {
 
     const [data, setData] = useState([
         {name: 'User', key: '1', topColor: '#5D5FEE', backgColor: '#c7d7eb', icon: require('../../../assets/profile.png')},
-        {name: 'Manager', key: '2', topColor: '#FF4F00', backgColor: '#F7D088', icon: require('../../../assets/manager.png')},
+        // {name: 'Manager', key: '2', topColor: '#FF4F00', backgColor: '#F7D088', icon: require('../../../assets/manager.png')},
         {name: 'Departments', key: '3', topColor: '#235D3A', backgColor: '#ABE0B7', icon: require('../../../assets/department.png')},
-        {name: 'Employee', key: '4', topColor: '#511F52', backgColor: '#ECD4EA', icon: require('../../../assets/employees.png')},
+        //{name: 'Employee', key: '4', topColor: '#511F52', backgColor: '#ECD4EA', icon: require('../../../assets/employees.png')},
         {name: 'Attendance', key: '5', topColor: '#485935', backgColor: '#CADBB7', icon: require('../../../assets/attendance.png')},
         {name: 'Salary', key: '6', topColor: '#A556B9', backgColor: '#E6AFF5', icon: require('../../../assets/salary.png')},
         {name: 'Performance Reviews', key: '7', topColor: '#F41E1E', backgColor: '#F6AEAE', icon: require('../../../assets/increase.png')},
@@ -60,6 +60,12 @@ const Home = ({navigation}) => {
         }
         if(itemID == 8) {
             navigation.navigate("JobScreen");
+        }
+        if(itemID == 12) {
+            navigation.navigate("ReportScreen");
+        }
+        if(itemID == 11) {
+            navigation.navigate("AdminEmployeeBenefits");
         }
     }
 

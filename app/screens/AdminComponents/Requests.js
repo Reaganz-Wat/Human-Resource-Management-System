@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import LeaveCard from "../../components/LeaveCard";
 import axios from "axios";
 import MyAPI from "../../components/API";
 
 const Requests = () => {
   const [value, setValue] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchLeave = async () => {
     try {
       const response = await axios.get(MyAPI.leaveRequestcruds);
       const dataInfo = response.data;
       setValue(dataInfo);
-      //console.log(dataInfo);
+      console.log(dataInfo);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchLeave().then(()=>{setRefreshing(false)});
+  }
 
   useEffect(() => {
     fetchLeave();
@@ -47,6 +53,11 @@ const Requests = () => {
         keyExtractor={(item) => item.request_id.toString()}
         data={value}
         renderItem={renderLeaveCard}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={()=>{
+            fetchLeave().then(()=>{onRefresh})
+          }}/>
+        }
       />
     </View>
   );
