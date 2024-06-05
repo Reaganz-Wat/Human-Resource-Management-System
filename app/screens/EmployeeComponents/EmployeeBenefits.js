@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,66 +12,97 @@ import CustomModal from "../../components/CustomModal";
 import MyAPI from "../../components/API";
 import axios from "axios";
 import CustomButton from "../../components/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function EmployeeBenefits() {
   const [modalVisible, setModalVisible] = useState(false);
   const [benefit, setBenefit] = useState("");
   const [description, setDescription] = useState("");
+  const [benefitData, setBenefitData] = useState([]);
+  const [benefitId, setBenefitId] = useState("");
+  const [userId, setUserId] = useState("");
 
-  const benefitsData = [
-    {
-      id: 1,
-      title: "Healthcare",
-      description: "Comprehensive healthcare plans including medical, dental, and vision.",
-      icon: "hospital-box",
-      color: "#4CAF50",
-    },
-    {
-      id: 2,
-      title: "Retirement",
-      description: "401(k) plan with company matching contributions.",
-      icon: "account-cash",
-      color: "#2196F3",
-    },
-    {
-      id: 3,
-      title: "Vacation",
-      description: "Generous paid time off and holiday policies.",
-      icon: "beach",
-      color: "#FF9800",
-    },
-    {
-      id: 4,
-      title: "Education",
-      description: "Tuition reimbursement for continued education and professional development.",
-      icon: "school",
-      color: "#9C27B0",
-    },
-  ];
+  // are for showing modals
+  const [isApplying, setIsApplying] = useState(false); // modal for applying for a benefit
+
+  const getBenefits = async () => {
+    try {
+      const response = await axios.get(MyAPI.benefits_endpoint);
+      const response_data = await response.data;
+      setBenefitData(response_data);
+      console.log(benefitData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("user_id");
+      if (id !== null) {
+        setUserId(id);
+      } else {
+        console.log("No user id exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const benefitApplication = async () => {
+    // console.log("Benefit id: ", benefitId);
+    // console.log("User id", userId);
+    try {
+      const response = await axios.post(MyAPI.employee_benefit_application, {
+        user_id: userId,
+        benefit_id: benefitId,
+      });
+      const response_data = await response.data;
+
+      console.log("Response: ", response_data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const renderItems = ({ item, index }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => {
+        setIsApplying(true);
+        setModalVisible(true);
+        setBenefitId(item.benefit_id);
+      }}
+    >
       <View style={{ ...styles.cardContent, borderColor: item.color }}>
         <View style={styles.cardTextContainer}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardTitle}>{item.benefit}</Text>
           <Text style={styles.cardDescription}>{item.description}</Text>
+          <Text style={styles.cardTitle}>{item.date_created}</Text>
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <CustomButton title="Apply" color="blue" onPress={() => applyForBenefit(item.id)} />
           <CustomButton title="Cancel" color="red" onPress={() => cancelBenefitApplication(item.id)} />
-        </View>
+        </View> */}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
+  useEffect(() => {
+    getUserId();
+    getBenefits();
+  }, []);
+
   const benefitForms = () => (
-    <View style={styles.modalContainer}>
+    <View>
       <View style={{ alignItems: "center" }}>
         <Text style={styles.modalTitle}>Add Benefit Program</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput placeholder="Benefit name" onChangeText={setBenefit} />
-        <TextInput placeholder="Benefit description" onChangeText={setDescription} />
+        <TextInput
+          placeholder="Benefit description"
+          onChangeText={setDescription}
+        />
       </View>
       <View style={styles.modalButtonContainer}>
         <TouchableOpacity
@@ -89,6 +120,34 @@ function EmployeeBenefits() {
         >
           <Text style={{ color: "#fff" }}>Create Benefit</Text>
         </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const benefitContentApplication = () => (
+    <View>
+      <View style={{ alignItems: "center" }}>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          Apply for Benefit Program
+        </Text>
+      </View>
+      <View>
+        <CustomButton
+          title={"Apply"}
+          color={"green"}
+          onPress={() => {
+            benefitApplication();
+            setModalVisible(false);
+          }}
+        />
+        <CustomButton
+          title={"Cancel"}
+          color={"blue"}
+          onPress={() => {
+            setModalVisible(false);
+            setIsApplying(false);
+          }}
+        />
       </View>
     </View>
   );
@@ -143,7 +202,7 @@ function EmployeeBenefits() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={benefitsData}
+        data={benefitData}
         renderItem={renderItems}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
@@ -151,7 +210,7 @@ function EmployeeBenefits() {
       <CustomModal
         visible={modalVisible}
         onClose={() => setModalVisible(!modalVisible)}
-        contentComponent={benefitForms}
+        contentComponent={isApplying ? benefitContentApplication : benefitForms}
       />
       <FloatingButton onPress={() => setModalVisible(true)} />
     </View>

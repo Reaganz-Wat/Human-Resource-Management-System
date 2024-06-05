@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, RefreshControl } from "react-native";
 import MyAPI from "../../components/API";
 
 const EmpAttendance = () => {
   const [userId, setUserId] = useState("");
   const [attendanceData, setAttendanceData] = useState([]);
-
+  const [refreshing, setRefreshing] = useState(false);
 
   const sendDummy = async () => {
     try {
@@ -19,6 +19,10 @@ const EmpAttendance = () => {
       console.error(err);
     }
   };
+  const onRefresh = () => {
+    setRefreshing(true);
+    sendDummy().then(()=>setRefreshing(false));
+  }
 
   useEffect(() => {
     const get_user_id = async () => {
@@ -62,6 +66,9 @@ const EmpAttendance = () => {
         renderItem={renderAttendanceItem}
         keyExtractor={(item) => item.attendance_id}
         contentContainerStyle={styles.list}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
       />
     </View>
   );

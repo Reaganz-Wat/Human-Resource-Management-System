@@ -33,7 +33,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='EmployeeBenefits'>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='OnboardingScreen'>
         <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
         <Stack.Screen name='GetStartedScreen' component={GetStartedScreen}/>
         <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>

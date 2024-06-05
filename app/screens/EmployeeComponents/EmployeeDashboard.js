@@ -132,6 +132,11 @@ const EmployeeDashboard = ({ navigation }) => {
     });
   };
 
+  // cancel the modal
+  const cancel = () => {
+    setModalVisible(false);
+  }
+
   //   Modal content
   const logoutContent = () => (
     <View>
@@ -140,6 +145,9 @@ const EmployeeDashboard = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={logout} style={styles.buttons}>
         <Text style={styles.textStyles}>Logout</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={cancel} style={[styles.buttons, {backgroundColor: 'green'}]}>
+        <Text style={styles.textStyles}>Cancel</Text>
       </TouchableOpacity>
     </View>
   );
