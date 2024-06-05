@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } elseif ($role == "Manager") {
             create_manager($user_name, $password, $email, $role, $department_id);
         } else {
+            //create_employee($user_name, $password, $email, $role, $department_id, $phone_number, $job_title);
             create_employee($user_name, $password, $email, $role, $department_id, $phone_number, $job_title);
         }
 
