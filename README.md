@@ -1,27 +1,25 @@
-# Human-Resource-Management-System
-Human Resource  Management system is a mobile app built using React-Native (Front end), and backend using PHP, MySQL
+# Human Resource Management System
+
+Human Resource Management system is a mobile app built using React-Native (Front end), and backend using PHP, MySQL.
 
 ## Screenshots
 
 ### Onboarding Screens
 
-![Onboarding 1](assets/screenshots/onboarding1.jpg)
-
-
-![Onboarding 2](assets/screenshots/onboarding2.jpg)
-
-
-![Onboarding 3](assets/screenshots/onboarding3.jpg)
+<!-- Display onboarding screens in a single row -->
+<p float="left">
+  <img src="assets/screenshots/onboarding1.jpg" width="200" />
+  <img src="assets/screenshots/onboarding2.jpg" width="200" /> 
+  <img src="assets/screenshots/onboarding3.jpg" width="200" />
+</p>
 
 ### Login Screen
 
 ![Login](assets/screenshots/login.jpg)
 
-
 ### Dashboard Screen
 
 ![Dashboard](assets/screenshots/dashboard.jpg)
-
 
 ## Installation
 
