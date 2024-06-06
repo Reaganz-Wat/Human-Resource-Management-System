@@ -15,11 +15,11 @@ Human Resource Management system is a mobile app built using React-Native (Front
 
 ### Login Screen
 
-![Login](assets/screenshots/login.jpg | width=400)
+<img src="assets/screenshots/login.jpg" width="400" />
 
 ### Dashboard Screen
 
-![Dashboard](assets/screenshots/dashboard.jpg | width=400)
+<img src="assets/screenshots/dashboard.jpg" width="400" />
 
 ## Installation
 
