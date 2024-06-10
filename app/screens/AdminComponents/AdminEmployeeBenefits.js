@@ -6,13 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { Button, Card, IconButton, TextInput, Title } from "react-native-paper";
-import * as Animatable from "react-native-animatable";
+import { Card, IconButton, TextInput } from "react-native-paper";
 import FloatingButton from "../../components/FloatingButton";
 import CustomModal from "../../components/CustomModal";
 import MyAPI from "../../components/API";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomButton from "../../components/CustomButton";
 
 function AdminEmployeeBenefits() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,12 +23,15 @@ function AdminEmployeeBenefits() {
   const [selectedBenefit, setSelectedBenefit] = useState(null);
   const [userId, setUserId] = useState(null);
 
+  // flags to show actions e.g, editing
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const get_user_id = async () => {
     const id = await AsyncStorage.getItem("user_id");
     if (id) {
       setUserId(id);
     }
-  }
+  };
 
   useEffect(() => {
     fetchBenefitsData();
@@ -41,6 +44,7 @@ function AdminEmployeeBenefits() {
       const response = await axios.get(MyAPI.benefits_endpoint);
       const responseData = response.data;
       setBenefitsData(responseData);
+      console.log(responseData);
     } catch (error) {
       console.error("Error fetching benefits data:", error);
     }
@@ -54,24 +58,40 @@ function AdminEmployeeBenefits() {
     setModalVisible(true);
   };
 
-  const renderItems = ({ item, index }) => (
-    <Animatable.View
-      animation="fadeInUp"
-      delay={index * 300}
-      style={styles.cardContainer}
+  const deleteBenefit = async () => {
+    try {
+      const response = await axios.post(MyAPI.delete_benefit, {
+        params: { id: benefitId },
+      });
+      const response_data = response.data;
+      console.log("Delete Response: ", response_data);
+      fetchBenefitsData(); // Refresh the list after deletion
+    } catch (error) {
+      console.error("Error deleting benefit:", error);
+    }
+  };
+  
+
+  const RenderItems = ({ item }) => (
+    <Card
+      style={styles.card}
+      onPress={() => handleCardPress(item)}
+      onLongPress={() => {
+        setBenefitId(item.benefit_id);
+        setIsDeleting(true);
+        setModalVisible(true);
+      }}
     >
-      <Card style={styles.card} onPress={() => handleCardPress(item)}>
-        <Card.Title
-          title={item.benefit}
-          left={(props) => (
-            <IconButton {...props} icon="folder" color="#4CAF50" size={30} />
-          )}
-        />
-        <Card.Content>
-          <Text style={styles.description}>{item.description}</Text>
-        </Card.Content>
-      </Card>
-    </Animatable.View>
+      <Card.Title
+        title={item.benefit}
+        left={(props) => (
+          <IconButton {...props} icon="folder" color="#4CAF50" size={30} />
+        )}
+      />
+      <Card.Content>
+        <Text style={styles.description}>{item.description}</Text>
+      </Card.Content>
+    </Card>
   );
 
   const benefitForms = () => (
@@ -113,7 +133,9 @@ function AdminEmployeeBenefits() {
           style={styles.buttons}
           onPress={() => {
             setModalVisible(!modalVisible);
-            selectedBenefit ? editBenefitProgram() : sendBenefitProgramsToDatabase();
+            selectedBenefit
+              ? editBenefitProgram()
+              : sendBenefitProgramsToDatabase();
           }}
         >
           <Text style={{ color: "#fff" }}>
@@ -124,12 +146,34 @@ function AdminEmployeeBenefits() {
     </View>
   );
 
+  const DeleteForm = () => (
+    <View>
+      <Text>Are you sure you want to delete ?</Text>
+      <View>
+        <CustomButton
+          title={"Cancel"}
+          color={"blue"}
+          onPress={() => {
+            setIsDeleting(false);
+            setModalVisible(false);
+          }}
+        />
+        <CustomButton title={"Delete"} color={"red"} onPress={
+          ()=>{
+            deleteBenefit();
+            setModalVisible(false);
+          }
+        } />
+      </View>
+    </View>
+  );
+
   const sendBenefitProgramsToDatabase = async () => {
     try {
       const response = await axios.post(MyAPI.create_benefit, {
         benefit: benefit,
         description: description,
-        created_by: userId
+        created_by: userId,
       });
       const response_data = await response.data;
       console.log("Response: ", response_data);
@@ -145,7 +189,7 @@ function AdminEmployeeBenefits() {
         id: benefitId,
         benefit: benefit,
         description: description,
-        modified_by: userId
+        modified_by: userId,
       });
       const response_data = await response.data;
       console.log("Response: ", response_data);
@@ -160,8 +204,8 @@ function AdminEmployeeBenefits() {
     <View style={styles.container}>
       <FlatList
         data={benefitsData}
-        renderItem={renderItems}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <RenderItems item={item} />}
+        keyExtractor={(item) => item.benefit_id}
         showsVerticalScrollIndicator={false}
       />
       <CustomModal
@@ -169,7 +213,7 @@ function AdminEmployeeBenefits() {
         onClose={() => {
           setModalVisible(!modalVisible);
         }}
-        contentComponent={benefitForms}
+        contentComponent={isDeleting ? DeleteForm : benefitForms}
       />
       <FloatingButton
         onPress={() => {
@@ -201,6 +245,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     elevation: 5,
+    marginBottom: 20,
   },
   description: {
     fontSize: 16,

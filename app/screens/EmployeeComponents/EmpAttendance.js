@@ -42,19 +42,19 @@ const EmpAttendance = () => {
     sendDummy();
   }, [userId])
 
-  const renderAttendanceItem = ({ item }) => (
+  const RenderAttendanceItem = ({ items }) => (
     <View style={styles.attendanceItem}>
       <Text style={styles.label}>
-        Date: <Text style={styles.value}>{item.date}</Text>
+        Date: <Text style={styles.value}>{items.date}</Text>
       </Text>
       <Text style={styles.label}>
-        Time In: <Text style={styles.value}>{item.time_in}</Text>
+        Time In: <Text style={styles.value}>{items.time_in}</Text>
       </Text>
       <Text style={styles.label}>
-        Time Out: <Text style={styles.value}>{item.time_out || "N/A"}</Text>
+        Time Out: <Text style={styles.value}>{items.time_out || "N/A"}</Text>
       </Text>
       <Text style={styles.label}>
-        Status: <Text style={styles.value}>{item.status || "N/A"}</Text>
+        Status: <Text style={styles.value}>{items.status || "N/A"}</Text>
       </Text>
     </View>
   );
@@ -63,7 +63,7 @@ const EmpAttendance = () => {
     <View style={styles.container}>
       <FlatList
         data={attendanceData}
-        renderItem={renderAttendanceItem}
+        renderItem={ ({item}) => (<RenderAttendanceItem items={item} />) }
         keyExtractor={(item) => item.attendance_id}
         contentContainerStyle={styles.list}
         refreshControl={

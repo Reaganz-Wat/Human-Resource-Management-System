@@ -27,6 +27,7 @@ import Reports from './app/screens/AdminComponents/Reports';
 import EmployeeBenefits from './app/screens/EmployeeComponents/EmployeeBenefits';
 import AdminEmployeeBenefits from './app/screens/AdminComponents/AdminEmployeeBenefits';
 import AddSalary from './app/screens/AdminComponents/AddSalary';
+import UsersDetails from './app/screens/AdminComponents/UsersDetails';
 
 const Stack = createStackNavigator();
 
@@ -60,6 +61,7 @@ export default function App() {
         <Stack.Screen name='AdminEmployeeBenefits' component={AdminEmployeeBenefits} options={{headerShown: true, title: "Employee Benefits Programs"}} />
         <Stack.Screen name='AddSalaryScreen' component={AddSalary} options={{headerShown: true, title: "Add Salary"}}/>
         <Stack.Screen name='Leaves' component={Leaves} />
+        <Stack.Screen name='userdetailscreen' component={UsersDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

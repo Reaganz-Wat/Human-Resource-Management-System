@@ -1,4 +1,4 @@
-const IP_ADDRESS = "10.160.1.10";
+const IP_ADDRESS = "192.168.106.83";
 
 const MyAPI = {
     registerUser: `http://${IP_ADDRESS}/WEB%20APPLICATIONS/human%20resource%20system/ADMINCRUDS/registerUser.php`,
@@ -28,6 +28,8 @@ const MyAPI = {
     get_emp_sal: `http://${IP_ADDRESS}WEB APPLICATIONS/human resource system/ADMINCRUDS/get_employeeSal.php`,
     benefits_endpoint: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/getBenefits.php`,
     edit_benefit: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/ADMINCRUDS/edit_benefit.php`,
-    employee_benefit_application: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/application_benefits.php`
+    employee_benefit_application: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/EMPLOYEECRUDS/application_benefits.php`,
+    delete_benefit: `http://${IP_ADDRESS}WEB APPLICATIONS/human resource system/ADMINCRUDS/delete_benefit.php`,
+    API: `http://${IP_ADDRESS}/WEB APPLICATIONS/human resource system/V1`
 };
 export default MyAPI;
